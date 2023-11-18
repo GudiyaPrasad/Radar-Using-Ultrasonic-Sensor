@@ -1,0 +1,147 @@
+#include <Servo.h>
+//defines lcd pins
+
+//defines tirg  and echo pins of the ultrasonic sensor
+Const int trigpin – 10;
+Const int echopin – 11;
+
+//defines piezo pin
+Const int piezoin - 8;
+
+//variables for the duration and the distance
+Long duration;
+Int distance;
+
+Int notes[] – { 262, 462, 862, 1662, 3262}; //enter here the notes you like
+Servo myservo; // creates a servo object for controlling the servo motor
+
+Void setup() {
+     Pinmode (trigpin, OUTPUT); //sets the trigpin as an output
+     Pinmode (echopin, INPUT); // sets the echopin as an input
+     Serial.begin(9600);
+    Myservo.attach(12); // defines on which pin is the servo motor attached
+}
+Void loop(){
+     // rotates the servo motor from 15 to 165 degrees
+     For(int i-15; 1<-165; i++){
+Myservo.write(i);
+
+Distance – calculatedistance(); // calls a function for calculating the distance      measured by the ultrasonic sensor for each degree
+
+//beep sequence
+If(distance > 40){
+  noTone(piezopin);
+   delay(10);
+   noTone(piezopin);
+  delay(30);
+}
+Else if (distance < -40 && distance >30){
+   Tone(piezopin, notes[1]);
+   Delay(10);
+   noTone(piezopin);
+  delay(30);
+}
+Else if (distance <-30 && distance > 20){
+   Tone (piezopin, notes[20]);
+  noTone(piezopin);
+  delay(30);
+}
+Else{
+   Tone(piezopin,notes[4]);
+    Delay(10);
+    noTone(piezopin);
+    delay(30);
+}
+Serial.print(i);//sends the current degree into the serial port
+Serial.print(“,”);//sends addition character right next to the previous value needed         
+   	later in the processing IDE for indexing
+serial.print(distance);//sends the distance value into the serial port
+serial.print(“,”);//sends addition character right next to the previous value needed         
+   	later in the processing IDE for indexing
+}
+//repeats the previous lines from 165 to 15 degrees
+For(int i-165; i>15; i--){
+Myservo.write(i);
+
+Distance – calculatedistance();
+If(distance > 40){
+ NoTone(piezopin);
+  Delay(10);
+  noTone(piezopin);
+  delay(30);
+}
+ Else if (distance <-40 && distance >30){
+  Tone (piezopin, notes[1]);
+  Delay(10);
+  Notone(piezopin);
+  Delay(30);
+}
+Else if (distance <-30 && distance >20){
+  Tone (piezopin, notes[2]);
+  Delay(10);
+  Notone(piezopin);
+  Delay(30);
+}
+Else if (distance <-20 && distance >10){
+  Tone (piezopin, notes[3]);
+  Delay(10);
+  Notone(piezopin);
+  Delay(30);
+}
+ Else{
+Tone (piezopin, notes[4]);
+  Delay(10);
+  Notone(piezopin);
+  Delay(30);
+}
+Serial.print(1);
+Delay(30);
+}
+Else if (distance <-40 && distance >30){
+  Tone (piezopin, notes[1]);
+  Delay(10);
+  Notone(piezopin);
+  Delay(30);
+}
+Else if (distance <-30 && distance >20){
+  Tone (piezopin, notes[2]);
+  Delay(10);
+  Notone(piezopin);
+  Delay(30);
+}
+
+Else if (distance <-20 && distance >10){
+  Tone (piezopin, notes[3]);
+  Delay(10);
+  Notone(piezopin);
+  Delay(30);
+}
+Else{
+Tone (piezopin, notes[4]);
+  Delay(10);
+  Notone(piezopin);
+  Delay(30);
+}
+Serial.print(i);
+Serial.print(“,”);
+Serial.print(distance);
+Serial.print(“,”),
+    }
+}
+//function for calculating the distance measured by the ultrasonic sensor
+Int calculatedistance(){
+Digitalwrite(trigpin, LOW);
+Delaymicroseconds(2);
+//sets the trigpin on HIGH state for 10 micro seconds
+Digitalwrite(trigpin,HIGH);
+Delaymicroseconds(10);
+Digitalwrite(trigpin, LOW);
+Duration – pulseIN(echopin,HIGH);
+//U(m/s)-dx(m)/(m)/dT(s)
+//in this case duration(time)- 2*distance/speed of sound->
+//distance-speed of sound * duration/2
+// in dry air at 200 c, the speed of sound is 343.2 m/s or 0.003432 m/microsecond 
+	Or 0,03434 cm/microseconds
+Distance – duration*0.034/2;
+Return distance;
+}
